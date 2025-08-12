@@ -9,7 +9,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"kubevirt.io/kubevirtbmc/pkg/generated/redfish/server"
 	"kubevirt.io/kubevirtbmc/pkg/resourcemanager"
-	"kubevirt.io/kubevirtbmc/pkg/session"
 )
 
 const (
@@ -27,7 +26,7 @@ type Emulator struct {
 func NewEmulator(ctx context.Context, port int, resourceManager resourcemanager.ResourceManager) *Emulator {
 	apiService := NewAPIService(resourceManager)
 	apiController := server.NewDefaultAPIController(apiService)
-	router := server.NewRouter(session.AuthMiddleware, apiController)
+	router := server.NewRouter(BasicAuthMiddleware, apiController)
 
 	return &Emulator{
 		ctx:  ctx,
@@ -59,4 +58,23 @@ func (e *Emulator) Stop() {
 	}
 	e.wg.Wait()
 	logrus.Info("Redfish emulator gracefully stopped")
+}
+
+func BasicAuthMiddleware(next http.Handler) http.Handler {
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// TODO add support for sessions also?
+		username, password, exists := r.BasicAuth()
+		if !exists {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		if username != defaultUserName || password != defaultPassword {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
