@@ -40,6 +40,17 @@ func (a *ComputerSystemAdapter) GetComputerSystem() *server.ComputerSystemV1220C
 	return a.computerSystem
 }
 
+func (a *ComputerSystemAdapter) GetComputerSystemResetActionInfo() *server.ActionInfoV142Parameters {
+	allowed := make([]*string, len(server.AllowedResourceResetTypeEnumValues))
+	for i, rt := range server.AllowedResourceResetTypeEnumValues {
+		str := string(rt)
+		allowed[i] = &str
+	}
+	return &server.ActionInfoV142Parameters{
+		AllowableValues: allowed,
+	}
+}
+
 func (a *ComputerSystemAdapter) GetID() string {
 	return a.computerSystem.Id
 }
@@ -79,8 +90,9 @@ func NewComputerSystem(id, name string, powerState server.ResourcePowerState) *C
 		PowerState:   powerState,
 		Actions: server.ComputerSystemV1220Actions{
 			ComputerSystemReset: server.ComputerSystemV1220Reset{
-				Target: "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset",
-				Title:  "Reset",
+				Target:     "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset",
+				ActionInfo: "/redfish/v1/Systems/1/ResetActionInfo",
+				Title:      "Reset",
 			},
 		},
 		Boot: server.ComputerSystemV1220Boot{

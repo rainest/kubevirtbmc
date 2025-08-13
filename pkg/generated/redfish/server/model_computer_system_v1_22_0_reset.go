@@ -18,6 +18,10 @@ type ComputerSystemV1220Reset struct {
 
 	// Friendly action name
 	Title string `json:"title,omitempty"`
+
+	// ActionInfo is https://www.dmtf.org/sites/default/files/standards/documents/DSP2046_2023.3.html#actioninfo-141
+	// for the reset action. It lists allowed actions.
+	ActionInfo string `json:"@Redfish.ActionInfo"`
 }
 
 // AssertComputerSystemV1220ResetRequired checks if the required fields are not zero-ed
