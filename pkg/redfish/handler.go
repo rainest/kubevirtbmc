@@ -197,6 +197,18 @@ func (h *handler) GetComputerSystem() (*server.ComputerSystemV1220ComputerSystem
 	return adapter.GetComputerSystem(), nil
 }
 
+func (h *handler) GetComputerSystemResetActionInfo() (*server.ActionInfoV142Parameters, error) {
+	computerSystem, err := h.rm.GetComputerSystem()
+	if err != nil {
+		return nil, err
+	}
+	adapter, ok := computerSystem.(*resourcemanager.ComputerSystemAdapter)
+	if !ok {
+		return nil, fmt.Errorf("unexpected computer system type: %T", computerSystem)
+	}
+	return adapter.GetComputerSystemResetActionInfo(), nil
+}
+
 func (h *handler) PatchComputerSystem(computerSystemPatch *server.ComputerSystemV1220ComputerSystem) error {
 	boot := computerSystemPatch.Boot
 	if boot.BootSourceOverrideEnabled != server.COMPUTERSYSTEMV1220BOOTSOURCEOVERRIDEENABLED_DISABLED {

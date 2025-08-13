@@ -7734,6 +7734,7 @@ type DefaultAPIServicer interface {
 	RedfishV1SystemsGet(context.Context) (ImplResponse, error)
 	RedfishV1SystemsPost(context.Context, ComputerSystemV1220ComputerSystem) (ImplResponse, error)
 	RedfishV1SystemsComputerSystemIdGet(context.Context, string) (ImplResponse, error)
+	RedfishV1SystemsComputerSystemIdResetActionInfoGet(context.Context, string) (ImplResponse, error)
 	RedfishV1SystemsComputerSystemIdPut(context.Context, string, ComputerSystemV1220ComputerSystem) (ImplResponse, error)
 	RedfishV1SystemsComputerSystemIdDelete(context.Context, string) (ImplResponse, error)
 	RedfishV1SystemsComputerSystemIdPatch(context.Context, string, ComputerSystemV1220ComputerSystem) (ImplResponse, error)
