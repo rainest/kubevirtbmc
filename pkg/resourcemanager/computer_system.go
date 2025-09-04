@@ -3,6 +3,8 @@ package resourcemanager
 import (
 	"fmt"
 
+	"k8s.io/utils/ptr"
+
 	"kubevirt.io/kubevirtbmc/pkg/generated/redfish/server"
 	"kubevirt.io/kubevirtbmc/pkg/util"
 )
@@ -40,14 +42,26 @@ func (a *ComputerSystemAdapter) GetComputerSystem() *server.ComputerSystemV1220C
 	return a.computerSystem
 }
 
-func (a *ComputerSystemAdapter) GetComputerSystemResetActionInfo() *server.ActionInfoV142Parameters {
+func (a *ComputerSystemAdapter) GetComputerSystemResetActionInfo(id string) *server.ActionInfoV142ParametersResponse {
 	allowed := make([]*string, len(server.AllowedResourceResetTypeEnumValues))
 	for i, rt := range server.AllowedResourceResetTypeEnumValues {
 		str := string(rt)
 		allowed[i] = &str
 	}
-	return &server.ActionInfoV142Parameters{
-		AllowableValues: allowed,
+	return &server.ActionInfoV142ParametersResponse{
+		OdataId:     fmt.Sprintf("/redfish/v1/Systems/%s/ResetActionInfo", id),
+		OdataType:   "#ActionInfo.v1_0_3.ActionInfo",
+		Description: "This action is used to reset the Systems",
+		Name:        "ResetAction",
+		Id:          "ResetAction",
+		Parameters: []server.ActionInfoV142Parameters{
+			{
+				AllowableValues: allowed,
+				Required:        true,
+				ObjectDataType:  ptr.To("String"),
+				Name:            "ResetType",
+			},
+		},
 	}
 }
 

@@ -49,6 +49,56 @@ type ActionInfoV142Parameters struct {
 	Required bool `json:"Required,omitempty"`
 }
 
+// The example server we have returns an ActionInfo, i.e.
+// https://www.dmtf.org/sites/default/files/standards/documents/DSP2046_2023.3.html#actioninfo-141
+// with various common fields set. There's no generated ActionInfo type. The
+// server.ComputerSystemV1220ComputerSystem type includes the generic fields but ostensibly does get them from the
+// generator: https://github.com/starbops/kubevirtbmc/blob/36c72624aa6dac4b01c65261a293a112ea2f44ad/pkg/generated/redfish/server/model_computer_system_v1_22_0_computer_system.go
+// I haven't the foggiest what's going on with the spec.
+//
+//{
+//  "@odata.etag": "W/\"1755118224\"",
+//  "@odata.id": "/redfish/v1/Systems/Node1/ResetActionInfo",
+//  "@odata.type": "#ActionInfo.v1_0_3.ActionInfo",
+//  "Description": "This action is used to reset the Systems",
+//  "Id": "ResetAction",
+//  "Name": "ResetAction",
+//  "Parameters": [
+//    {
+//      "AllowableValues": [
+//        "Off",
+//        "On",
+//        "ForceOff"
+//      ],
+//      "DataType": "String",
+//      "Name": "ResetType",
+//      "Required": true
+//    }
+//  ]
+//}
+// ActionInfoV142ParametersResponse
+type ActionInfoV142ParametersResponse struct {
+	// The current ETag of the resource.
+	OdataEtag string `json:"@odata.etag,omitempty"`
+
+	// The unique identifier for a resource.
+	OdataId string `json:"@odata.id"`
+
+	// The type of a resource.
+	OdataType string `json:"@odata.type"`
+
+	// The description of this resource.  Used for commonality in the schema definitions.
+	Description string `json:"Description,omitempty"`
+
+	// The unique identifier for this resource within the collection of similar resources.
+	Id string `json:"Id"`
+
+	// The name of the resource or array member.
+	Name string `json:"Name"`
+
+	Parameters []ActionInfoV142Parameters `json:"Parameters"`
+}
+
 // AssertActionInfoV142ParametersRequired checks if the required fields are not zero-ed
 func AssertActionInfoV142ParametersRequired(obj ActionInfoV142Parameters) error {
 	elements := map[string]interface{}{

@@ -197,7 +197,8 @@ func (h *handler) GetComputerSystem() (*server.ComputerSystemV1220ComputerSystem
 	return adapter.GetComputerSystem(), nil
 }
 
-func (h *handler) GetComputerSystemResetActionInfo() (*server.ActionInfoV142Parameters, error) {
+func (h *handler) GetComputerSystemResetActionInfo(id string) (*server.ActionInfoV142ParametersResponse, error) {
+	// this maybe should have the computer system ID, but the emulator just only returns the one
 	computerSystem, err := h.rm.GetComputerSystem()
 	if err != nil {
 		return nil, err
@@ -206,7 +207,7 @@ func (h *handler) GetComputerSystemResetActionInfo() (*server.ActionInfoV142Para
 	if !ok {
 		return nil, fmt.Errorf("unexpected computer system type: %T", computerSystem)
 	}
-	return adapter.GetComputerSystemResetActionInfo(), nil
+	return adapter.GetComputerSystemResetActionInfo(id), nil
 }
 
 func (h *handler) PatchComputerSystem(computerSystemPatch *server.ComputerSystemV1220ComputerSystem) error {
