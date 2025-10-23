@@ -26,18 +26,5 @@ jobs:
     with:
       fetch-depth: 1
       registry-name: ghcr.io/rainest/kubevirtbmc
-      cgo-enabled: true
-      platforms: "linux/amd64"
-      docker-file: "Dockerfile.build"
-  image_arm:
-    name: Build ARM Image
-    # TODO: Switch to openchami tag once tagged
-    uses: OpenCHAMI/github-actions/.github/workflows/docker-build-release.yml@45c9f0fd834c1b0e5a3eb6509e22c25faa05f686
-    with:
-      fetch-depth: 1
-      registry-name: ghcr.io/rainest/kubevirtbmc
-      cgo-enabled: true
-      additional-env-vars: |
-        CC=aarch64-linux-gnu-gcc
-      platforms: "linux/arm64"
-      docker-file: "Dockerfile.build"
+      platforms: "linux/amd64,linux/arm64"
+      docker-file: "Dockerfile"
