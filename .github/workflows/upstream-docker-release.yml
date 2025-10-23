@@ -28,3 +28,4 @@ jobs:
       registry-name: ghcr.io/rainest/kubevirtbmc
       platforms: "linux/amd64,linux/arm64"
       docker-file: "Dockerfile"
+      docker-target: "builder"
